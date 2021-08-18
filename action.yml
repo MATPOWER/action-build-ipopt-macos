@@ -1,0 +1,35 @@
+name: 'Build IPOPT (macOS)'
+description: 'Build IPOPT from source on macOS'
+author: 'Ray Zimmerman'
+
+runs:
+  using: "composite"
+  steps:
+    # expects that brew update has already been run
+    - name: Initialize Package Manager
+      run: brew update
+      shell: bash
+
+    - name: Install bash, metis
+      run: |
+        rm -rf /usr/local/bin/2to3
+        ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+        brew install bash
+        brew install metis
+      shell: bash
+
+    - name: Build IPOPT from source
+      run: |
+        export METIS_VER=`ls /usr/local/Cellar/metis`
+        export with_metis_cflags=-I/usr/local/Cellar/metis/${METIS_VER}/include
+        export with_metis_lflags="-L/usr/local/Cellar/metis/${METIS_VER}/lib -lmetis"
+        git clone https://github.com/coin-or/coinbrew
+        cd coinbrew
+        ./coinbrew fetch Ipopt --no-prompt
+        ./coinbrew build Ipopt --prefix=$HOME/install --test --no-prompt
+        ./coinbrew install Ipopt
+      shell: bash
+
+branding:
+  icon: 'zap'
+  color: 'yellow'
