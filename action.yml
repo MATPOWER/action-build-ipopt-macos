@@ -13,7 +13,8 @@ runs:
     - name: Install bash, metis
       run: |
         rm -rf /usr/local/bin/2to3
-        ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+        brew unlink gcc@10
+        brew install gcc
         brew install bash
         brew install metis
       shell: bash
