@@ -13,14 +13,13 @@ runs:
     - name: Install bash, metis
       run: |
         rm -rf /usr/local/bin/2to3
-        brew unlink gcc@10
-        brew install gcc
         brew install bash
         brew install metis
       shell: bash
 
     - name: Build IPOPT from source
       run: |
+        export FC=/usr/local/bin/gfortran-11
         export METIS_VER=`ls /usr/local/Cellar/metis`
         export with_metis_cflags=-I/usr/local/Cellar/metis/${METIS_VER}/include
         export with_metis_lflags="-L/usr/local/Cellar/metis/${METIS_VER}/lib -lmetis"
