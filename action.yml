@@ -23,8 +23,10 @@ runs:
         export METIS_VER=`ls /usr/local/Cellar/metis`
         export with_metis_cflags=-I/usr/local/Cellar/metis/${METIS_VER}/include
         export with_metis_lflags="-L/usr/local/Cellar/metis/${METIS_VER}/lib -lmetis"
-        git clone https://github.com/coin-or/coinbrew
+        mkdir -p coinbrew
         cd coinbrew
+        wget https://raw.githubusercontent.com/coin-or/coinbrew/v1.0/coinbrew
+        chmod a+x coinbrew
         ./coinbrew fetch Ipopt --no-prompt
         ./coinbrew build Ipopt --prefix $HOME/install --tests all --no-prompt
       shell: bash
